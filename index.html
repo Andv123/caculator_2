@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vn">
+<head>
+	<meta charset="utf-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<title>CACULATOR</title>
+	<link rel="stylesheet" type="text/css" href="css.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body >
+	<form id="caculator" >
+		<div id="screen">
+			<img src="picture/icon_caculator.jpg" style="padding-top: 5px; padding-left: 5px; width: 40px; height: 40px;" align="left">
+			<label style="text-align: center; font-size: 30px"><b>CACULATOR</b></label>
+			<input type="text" id="history">
+			<input type="text" id="view" style=" width: 240px; height: 50px; font-size: 35px; text-align: right;" max_chars="2" placeholder="0" readonly>			
+		</div>
+
+		<div class="row" style="padding-top: 10px">
+			<button type="button" id="canBac2" class="col-md-3">
+				<img src="picture/canbac2.png" style="width: 20px; height: 20px">
+			</button>
+			<button type="button" id="binhPhuong" class="col-3">x<sup>2</sup></button>
+			<button type="button" id="DEL"class="col-3">DEL</button>
+			<button type="button" id="backDel" class="col-3">
+				<img src="picture/backdel.png" style="width: 20px; height: 20px">
+			</button>
+			<button type="button" id="7" value="7" class="col-3">7</button>
+			<button type="button" id="8" value="8" class="col-3">8</button>
+			<button type="button" id="9" value="9" class="col-3">9</button>
+			<button type="button" id="cong" value="+" class="col-3">+</button>
+			<button type="button" id="4" value="4" class="col-3">4</button>
+			<button type="button" id="5" value="5" class="col-3">5</button>
+			<button type="button" id="6" value="6" class="col-3">6</button>
+			<button type="button" id="tru" value="-" class="col-3">-</button>
+			<button type="button" id="1" value="1" class="col-3">1</button>
+			<button type="button" id="2" value="2" class="col-3">2</button>
+			<button type="button" id="3" value="3" class="col-3">3</button>
+			<button type="button" id="nhan" value="*" class="col-3">&times;</button>
+			<button type="button" id="bang" value="=" class="col-3">=</button>
+			<button type="button" id="0" value="0" class="col-3">0</button>
+			<button type="button" id="thapPhan" value="." class="col-3">.</button>
+			<button type="button" id="chia" value="/" class="col-3">&#247;</button>
+		</div>
+	</form>
+	<script type="text/javascript">		
+		$(document).ready(function(event){			
+			$('#1,#2,#3,#4,#5,#6,#7,#8,#9').click(function(){
+				var v = $(this).val();
+				var str = $('#view').val();
+				var x = str.length;
+				if (x < 12) {
+					$('#view').val($('#view').val() + v );
+				}			
+			});
+
+			//button 0
+			$('#0').click(function(event){
+				var v = $(this).val();
+				var str = $('#view').val();
+				var x = str.length;				
+				if ($('#view').val() == '') {
+					$('#view').val();
+				} else if(x<12){
+
+					$('#view').val($('#view').val() + "0");
+				}
+
+			});
+
+			//button cham
+			$('#thapPhan').click(function(event){								
+				var string =$('#view').val();
+				var s = string.indexOf(".");				
+				if (s == -1) {					
+					$('#view').val($('#view').val() + "." );
+				} else{
+					$('#view').val();
+				}
+			});
+
+			//button =
+			$('#bang').click(function(event){				
+					var a = $('#history').val();
+					var b = $('#view').val();
+					var c = a.concat(b);
+					$('#view').val(eval(c));
+					$('#history').val(eval(c));
+					$('#history').val('')
+				});
+
+			//button DEL
+			$('#DEL').click(function(){
+				$('#history').val('');
+				$('#view').val('');
+			});
+
+			//button backdel
+			$('#backDel').click(function(event){
+				var str = $('#view').val();
+				var newStr = str.substring(0, str.length-1);
+				$('#view').val(newStr);
+			});
+
+			//button canbac2
+			$('#canBac2').click(function(event){
+				var x = $('#view').val(); //khai bao va gan gtri cua x = so vua nhap
+				var y = Math.sqrt(x);
+				$('#view').val(y);
+			});
+
+			//binh phuong
+			$('#binhPhuong').click(function(event){
+				var x = $('#view').val();
+				$('#view').val(eval(x*x));
+			});
+
+			//button +
+			$('#cong').click(function(event){			
+				$('#history').val($('#history').val() + $('#view').val() + $('#cong').val());
+				var str = $('#history').val();
+				var y = str.replace("++","+");				
+				$('#history').val(y);
+				var x = str.substring(0, str.length-1);
+				$('#history').val(eval(x) + $('#cong').val());	
+				$('#view').val('');
+
+			});
+
+			//button -
+			$('#tru').click(function(event){			
+				$('#history').val($('#history').val() + $('#view').val() + $('#tru').val());
+				var str = $('#history').val();
+				var y = str.replace("--","-");
+				$('#history').val(y);
+				var x = str.substring(0, str.length-1);
+				$('#history').val(eval(x) + $('#tru').val());	
+				$('#view').val('');
+			});
+
+			//button *
+			$('#nhan').click(function(event){			
+				$('#history').val($('#history').val() + $('#view').val() + $('#nhan').val());
+				var str = $('#history').val();
+				var y = str.replace("**","*");
+				$('#history').val(y);
+				var x = str.substring(0, str.length-1);
+				$('#history').val(eval(x) + $('#nhan').val());	
+				$('#view').val('');
+			});
+
+			//button chia
+			$('#chia').click(function(event){			
+				$('#history').val($('#history').val() + $('#view').val() + $('#chia').val());
+				var str = $('#history').val();
+				var y = str.replace("//","/");
+				$('#history').val(y);
+				var x = str.substring(0, str.length-1);
+				$('#history').val(eval(x) + $('#chia').val());	
+				$('#view').val('');
+			});
+				
+		});
+		
+
+	</script>
+
+</body>
+</html>
